@@ -14,7 +14,7 @@ int k_strlen(char *str) {
 char k_chartoupper(char character) {
     int a = character;
     char charupper = a;
-    if (a >= 97 && a <= 172) {
+    if (a >= 'a' && a <= 'z') {
         charupper = a - 32;
     }
     return charupper;
