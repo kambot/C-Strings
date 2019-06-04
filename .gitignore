@@ -1,0 +1,7 @@
+.vs/
+Debug/
+Release/
+x64/
+k_str.csproj.user
+k_str.vcxproj.user
+k_str.VC.VC.opendb
