@@ -109,5 +109,4 @@ void main() {
     printf("pad 3: '%s'\n", pad3);
 
 
-    int m = 0;
 }
