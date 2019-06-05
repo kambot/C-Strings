@@ -93,10 +93,10 @@ void main() {
     char* sub3 = k_substr(numbers_str, 0, -5);
     char* sub4 = k_substr(numbers_str, 0, 2 * nlen - 1);
     printf("String: '%s'\n", numbers_str);
-    printf("Start = %d  End = %d   Result = '%s'\n", 0, 5, sub1);
-    printf("Start = %d End = %d Result = '%s'\n", -1, -2 * nlen, sub2);
-    printf("Start = %d  End = %d  Result = '%s'\n", 0, -5, sub3);
-    printf("Start = %d  End = %d  Result = '%s'\n", 0, 2 * nlen - 1, sub4);
+    printf("Start = %3d End = %3d Result = '%s'\n", 0, 5, sub1);
+    printf("Start = %3d End = %3d Result = '%s'\n", -1, -2 * nlen, sub2);
+    printf("Start = %3d End = %3d Result = '%s'\n", 0, -5, sub3);
+    printf("Start = %3d End = %3d Result = '%s'\n", 0, 2 * nlen - 1, sub4);
 
     //string padding
     printf("\nString padding:\n");
