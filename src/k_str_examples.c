@@ -109,4 +109,15 @@ void main() {
     printf("pad 3: '%s'\n", pad3);
 
 
+    char **splittest = k_strsplit("a.bb..ccc..a..", "..");
+    //char **splittest = k_strsplit("", "..");
+    int total = 0;
+    for (int i = 0; splittest[i] != NULL; i++) {
+        total++;
+    }
+
+    int splen0 = k_strlen(splittest[0]);
+
+
+
 }

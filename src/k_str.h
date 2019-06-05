@@ -253,3 +253,61 @@ char *k_strpad(char *str, char pad, int length, int side) {
     return padstr;
 
 }
+
+
+
+char** k_strsplit(char *str, char *split) {
+
+    int slen = k_strlen(str);
+    int splen = k_strlen(split);
+
+    int matches = k_strfind(str, split, 0);
+
+    char **result = NULL;
+    result = malloc(slen - matches * splen + 2 * sizeof(char));
+
+    if (slen == 0) {
+        result[0] = calloc(1, sizeof(char));
+        result[1] = NULL;
+        return result;
+    }
+
+
+    int spos = 0; //starting position of substring
+    int epos = k_strindex(str, split); //ending position of substring
+
+    for (int i = 0; i <= matches; i++) {
+
+        if (spos > slen)
+            break;
+
+        //get the ending position of the substring
+        int epos0 = k_strindex(k_substr(str, spos, slen), split);
+
+        if (epos0 == -1)
+            epos = slen;
+        else
+            epos = epos0 + spos;
+        
+        char *buf = k_substr(str, spos, epos - 1);
+
+        if (spos >= epos) {
+            result[i] = calloc(1, sizeof(char));
+            spos = epos + splen;
+            continue;
+        }
+
+        if (epos0 == -1) {
+            result[i] = calloc(k_strlen(buf), sizeof(char));
+            k_strcopy(buf, result[i]);
+        }
+
+        result[i] = calloc(k_strlen(buf), sizeof(char));
+        k_strcopy(buf, result[i]);
+
+        spos = epos + splen;
+
+    }
+    result[matches + 1] = NULL;
+    return result;
+}
