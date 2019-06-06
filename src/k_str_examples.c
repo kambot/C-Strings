@@ -15,7 +15,7 @@ void main() {
 
     char* comp1_str = "abcd";
     char* comp2_str = "abca";
-    char* comp3_str = calloc(4, sizeof(char));
+    char* comp3_str = calloc(k_strlen(comp1_str)+1, sizeof(char));
 
 
     //get the length of a string
@@ -25,7 +25,7 @@ void main() {
 
     //convert to uppercase
     printf("\nUppercase:\n");
-    char* test_upper = calloc(k_strlen(test2_str), sizeof(char));
+    char* test_upper = calloc(k_strlen(test2_str)+1, sizeof(char));
     k_toupper(test2_str, test_upper);
     printf("'%s' --> '%s'\n", test2_str, test_upper);
 
@@ -57,7 +57,7 @@ void main() {
 
     //concatenate strings
     printf("\nString concatenation:\n");
-    char* concat_str = calloc(k_strlen(numbers_str) + k_strlen(comp1_str), sizeof(char));
+    char* concat_str = calloc(k_strlen(numbers_str) + k_strlen(comp1_str) + 1, sizeof(char));
     k_strappend(numbers_str, comp1_str, concat_str);
     printf("'%s' + '%s' = '%s'\n", numbers_str, comp1_str, concat_str);
 
@@ -108,15 +108,30 @@ void main() {
     printf("pad 2: '%s'\n", pad2);
     printf("pad 3: '%s'\n", pad3);
 
-
-    char **splittest = k_strsplit("a.bb..ccc..a..", "..");
-    //char **splittest = k_strsplit("", "..");
-    int total = 0;
-    for (int i = 0; splittest[i] != NULL; i++) {
-        total++;
+    //string split
+    printf("\nString split:\n");
+    int split_len = 0;
+    char *str_to_split = "a.bb..ccc...dddd..";
+    char **split_test = k_strsplit(str_to_split, "..", &split_len);
+    printf("String: '%s'\n", str_to_split);
+    printf("Split by: '%s'\n", "..");
+    for (int i = 0; i < split_len; ++i) {
+        printf("split (%d): '%s'\n", i, split_test[i]);
     }
 
-    int splen0 = k_strlen(splittest[0]);
+    //memory tests to make sure that the correct number of memory was allocated for these variables
+    free(comp3_str);
+    free(test_upper);
+    free(concat_str);
+    
+    free(sub1);
+    free(sub2);
+
+    free(pad1);
+    free(pad2);
+
+    printf("\nExamples complete!\n");
+
 
 
 

@@ -197,7 +197,7 @@ char *k_substr(char *str, int start, int end) {
         size *= -1;
     size += 1;
 
-    char *substr = calloc(size, sizeof(char));
+    char *substr = calloc(size+1, sizeof(char));
 
     int v = end > start ? 1 : -1;
 
@@ -221,7 +221,6 @@ char *k_substr(char *str, int start, int end) {
             break;
         pos += v;
     }
-    substr[spos] = '\0';
     return substr;
 }
 
@@ -237,13 +236,12 @@ char *k_strpad(char *str, char pad, int length, int side) {
     if (slen >= length)
         return str;
 
-    char *padstr = calloc(length, sizeof(char));
+    char *padstr = calloc(length+1, sizeof(char));
 
     int numpads = length - slen;
-    char *pads = calloc(numpads, sizeof(char));
+    char *pads = calloc(numpads+1, sizeof(char));
     for (int i = 0; i < numpads; i++)
         pads[i] = pad;
-    pads[numpads] = '\0';
 
     if (side != 1)
         k_strappend(pads, str, padstr); //left side
@@ -256,40 +254,40 @@ char *k_strpad(char *str, char pad, int length, int side) {
 
 
 
-char** k_strsplit(char *str, char *split) {
+char** k_strsplit(char *str, char *split, int *len) {
 
     int slen = k_strlen(str);
     int splen = k_strlen(split);
 
-    int matches = k_strfind(str, split, 0);
+    if (slen == 0)
+        return NULL;
 
     char **result = NULL;
-    result = malloc(slen - matches * splen + 2 * sizeof(char));
 
-    if (slen == 0) {
-        result[0] = calloc(1, sizeof(char));
-        result[1] = NULL;
-        return result;
-    }
+    *len = k_strfind(str, split, 0) + 1;
+
+    result = malloc(*len * sizeof(char*));
+
 
 
     int spos = 0; //starting position of substring
     int epos = k_strindex(str, split); //ending position of substring
 
-    for (int i = 0; i <= matches; i++) {
+    for (int i = 0; i < *len; i++) {
 
         if (spos > slen)
             break;
 
         //get the ending position of the substring
-        int epos0 = k_strindex(k_substr(str, spos, slen), split);
+        char* substr0 = k_substr(str, spos, slen);
+        int epos0 = k_strindex(substr0, split);
+        free(substr0);
 
         if (epos0 == -1)
             epos = slen;
         else
             epos = epos0 + spos;
-        
-        char *buf = k_substr(str, spos, epos - 1);
+        char *substr = k_substr(str, spos, epos - 1);
 
         if (spos >= epos) {
             result[i] = calloc(1, sizeof(char));
@@ -298,16 +296,19 @@ char** k_strsplit(char *str, char *split) {
         }
 
         if (epos0 == -1) {
-            result[i] = calloc(k_strlen(buf), sizeof(char));
-            k_strcopy(buf, result[i]);
+            result[i] = calloc(k_strlen(substr)+1, sizeof(char));
+            k_strcopy(substr, result[i]);
+            break;
         }
 
-        result[i] = calloc(k_strlen(buf), sizeof(char));
-        k_strcopy(buf, result[i]);
+        result[i] = calloc(k_strlen(substr)+1, sizeof(char));
+        k_strcopy(substr, result[i]);
+
+        free(substr);
 
         spos = epos + splen;
 
     }
-    result[matches + 1] = NULL;
+
     return result;
 }
